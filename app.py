@@ -1,18 +1,12 @@
 ### Import library untuk proses ###
 from google.cloud import storage_transfer, aiplatform
 
-
 ### Import library untuk Service Account ###
 from google.oauth2 import service_account
 import json
 
-### Import Service Account Credecntial and Use it for storage transfer and other library###
-with open('bdi-onprod-61508ddecc7a.json') as source:
-    info = json.load(source)
-
-credentials = service_account.Credentials.from_service_account_info(info)
-client_storage_transfer = storage_transfer.StorageTransferServiceClient(credentials=credentials)
-aiplatform.init(project="bdi-onprod", location="asia-southeast2", credentials=credentials)
+client_storage_transfer = storage_transfer.StorageTransferServiceClient()
+aiplatform.init(project="bdi-onprod", location="asia-southeast2")
 
 ### Definisi variabel ###
 
