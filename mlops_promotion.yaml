@@ -1,12 +1,16 @@
 steps:
-  - id: "run promotion script"
+  - id: "Build Environment"
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         pip install -r requirements.txt
-        python app.py
+
+  - id: "Run Script"
+    name: 'python:3.10'
+    entrypoint: 'python'
+    args: ['app.py']
         
 options:
   logging: CLOUD_LOGGING_ONLY
