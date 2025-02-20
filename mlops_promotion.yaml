@@ -1,13 +1,13 @@
 steps:
-  # - id: Promotion GCS
-  #   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  #   entrypoint: gcloud
-  #   args:
-  #     - transfer
-  #     - jobs
-  #     - run
-  #     - '4045639768897299619'
-  #     - '--no-async'
+  - id: Promotion GCS
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - transfer
+      - jobs
+      - run
+      - '4045639768897299619'
+      - '--no-async'
     
   - id: Upload Model
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
