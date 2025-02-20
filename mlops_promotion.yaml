@@ -17,65 +17,71 @@ steps:
       - |
         set -e
 
-        DISPLAY_NAME="${_DISPLAY_NAME}"
-        ARTIFACT_URI="${_ARTIFACT_URI}"
+        DISPLAY_NAMES=(${_DISPLAY_NAMES})
+        ARTIFACT_URIS=(${_ARTIFACT_URIS})
 
-        echo "Listing files in folder $${ARTIFACT_URI}..."
-        
-        FILES=$$(gsutil ls $${ARTIFACT_URI})
-        
-        if [ -z "$$FILES" ]; then
-          echo "No files found in $${ARTIFACT_URI}. Exiting."
-          exit 1
-        fi
-        
-        echo "Files found:"
-        echo "$$FILES"
-        
-        # Ekstrak ekstensi file dan buat list unik
-        EXTENSIONS=$$(echo "$$FILES" | sed -n 's/.*\.\(.*\)$/\1/p' | sort | uniq)
-        echo "Unique extensions: $$EXTENSIONS"
-        
-        # Default container image adalah SKLearn, kecuali ada file .bst
-        CONTAINER_IMAGE="${_CONTAINER_IMAGE_SKLEARN}"
+        for i in "${!DISPLAY_NAMES[@]}"; do
+          DISPLAY_NAME="${DISPLAY_NAMES[$i]}"
+          ARTIFACT_URI="${ARTIFACT_URIS[$i]}"
 
-        if echo "$$EXTENSIONS" | grep -q "bst"; then
-            CONTAINER_IMAGE="${_CONTAINER_IMAGE_XGBOOST}"
-            echo "Terdeteksi file .bst, menggunakan container image XGBoost."
-        else
-            echo "Tidak ada file .bst, menggunakan container image SKLearn."
-        fi
+          echo "=====START $$DISPLAY_NAME====="
 
-        echo "Container image yang digunakan: $$CONTAINER_IMAGE"
+          echo "Listing files in folder $${ARTIFACT_URI}..."
+          
+          FILES=$$(gsutil ls $${ARTIFACT_URI})
+          
+          if [ -z "$$FILES" ]; then
+            echo "No files found in $${ARTIFACT_URI}. Exiting."
+            exit 1
+          fi
+          
+          echo "Files found:"
+          echo "$$FILES"
+          
+          # Ekstrak ekstensi file dan buat list unik
+          EXTENSIONS=$$(echo "$$FILES" | sed -n 's/.*\.\(.*\)$/\1/p' | sort | uniq)
+          echo "Unique extensions: $$EXTENSIONS"
+          
+          # Default container image adalah SKLearn, kecuali ada file .bst
+          CONTAINER_IMAGE="${_CONTAINER_IMAGE_SKLEARN}"
 
-        echo "Cek apakah model '$${DISPLAY_NAME}' sudah ada..."
-        MODEL=$$(gcloud ai models list \
-                  --region=$LOCATION \
-                  --project=$PROJECT_ID \
-                  --filter="displayName=$${DISPLAY_NAME}" \
-                  --format="value(name)")
+          if echo "$$EXTENSIONS" | grep -q "bst"; then
+              CONTAINER_IMAGE="${_CONTAINER_IMAGE_XGBOOST}"
+              echo "File with .bst detected, will use container image of XGBoost."
+          else
+              echo "No file with .bst detected, will use container image of SKLearn."
+          fi
 
-        if [ -z "$$MODEL" ]; then
-            echo "Model belum ada. Upload model baru tanpa parent."
-            PARENT_FLAG=""
-        else
-            echo "Model sudah ada: $$MODEL. Upload sebagai versi baru dengan parent."
-            if [[ "$$MODEL" != projects/* ]]; then
-                echo "Parent model name is not in expected format. Reformatting..."
-                MODEL="projects/$PROJECT_ID/locations/$LOCATION/models/$$MODEL"
-            fi
-            PARENT_FLAG="--parent-model=$$MODEL"
-        fi
+          echo "Check if '$${DISPLAY_NAME}' already exists or not"
+          MODEL=$$(gcloud ai models list \
+                    --region=$LOCATION \
+                    --project=$PROJECT_ID \
+                    --filter="displayName=$${DISPLAY_NAME}" \
+                    --format="value(name)")
 
-        echo "Melakukan upload model..."
-        gcloud ai models upload \
-            --region=$LOCATION \
-            --project=$PROJECT_ID \
-            --display-name="$${DISPLAY_NAME}" \
-            --artifact-uri="$${ARTIFACT_URI}" \
-            --container-image-uri="$$CONTAINER_IMAGE" \
-            --version-aliases=default \
-            $$PARENT_FLAG
+          if [ -z "$$MODEL" ]; then
+              echo "Model not exist. Upload new model without parent."
+              PARENT_FLAG=""
+          else
+              echo "Model sudah ada: $$MODEL. Upload sebagai versi baru dengan parent."
+              if [[ "$$MODEL" != projects/* ]]; then
+                  echo "Parent model name is not in expected format. Reformatting..."
+                  MODEL="projects/$PROJECT_ID/locations/$LOCATION/models/$$MODEL"
+              fi
+              PARENT_FLAG="--parent-model=$$MODEL"
+          fi
+
+          echo "Uploading Model..."
+          gcloud ai models upload \
+              --region=$LOCATION \
+              --project=$PROJECT_ID \
+              --display-name="$${DISPLAY_NAME}" \
+              --artifact-uri="$${ARTIFACT_URI}" \
+              --container-image-uri="$$CONTAINER_IMAGE" \
+              --version-aliases=default \
+              $$PARENT_FLAG
+          echo "Done!"
+        echo "Done All Models!"
     
 options:
   logging: CLOUD_LOGGING_ONLY
@@ -83,10 +89,5 @@ options:
 substitutions:
   _CONTAINER_IMAGE_XGBOOST: 'asia-docker.pkg.dev/vertex-ai/prediction/xgboost-cpu.1-7:latest'
   _CONTAINER_IMAGE_SKLEARN: 'asia-docker.pkg.dev/vertex-ai/prediction/sklearn-cpu.1-3:latest'
-
-matrix:
-  include:
-    - _DISPLAY_NAME: "casatocc_apply_any_card_1"
-      _ARTIFACT_URI: "gs://destination-test-promote-gcs/model-1/custom-trained/2025-02-17T06:29:17.926152Z"
-    - _DISPLAY_NAME: "casatocc_apply_any_card_2"
-      _ARTIFACT_URI: "gs://destination-test-promote-gcs/model-2/custom-trained/2025-02-17T06:28:58.427768Z"
+  _DISPLAY_NAMES: "casatocc_apply_any_card_1 casatocc_apply_any_card_2"
+  _ARTIFACT_URIS: "gs://destination-test-promote-gcs/model-1/custom-trained/2025-02-17T06:29:17.926152Z gs://destination-test-promote-gcs/model-2/custom-trained/2025-02-17T06:28:58.427768Z"
