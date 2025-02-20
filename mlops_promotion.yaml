@@ -1,16 +1,85 @@
 steps:
-  # - id: "Build Environment"
-  #   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       pip install -r requirements.txt
+  - id: Promotion GCS
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - transfer
+      - jobs
+      - run
+      - '4045639768897299619'
+      - '--no-async'
+    
+  - id: Upload Model
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        set -e
 
-  - id: "Run Script"
-    name: 'python:3.10'
-    entrypoint: 'python'
-    args: ['app.py']
+        DISPLAY_NAME="casatocc_apply_any_card"
+        ARTIFACT_URI="gs://destination-test-promote-gcs/model-7893904149199192064/custom-trained/2025-02-17T06:28:58.427768Z"
+
+        echo "Listing files di folder $${ARTIFACT_URI}..."
         
+        FILES=$$(gsutil ls $${ARTIFACT_URI})
+        
+        if [ -z "$$FILES" ]; then
+          echo "Tidak ditemukan file di $${ARTIFACT_URI}. Exiting."
+          exit 1
+        fi
+        
+        echo "Files ditemukan:"
+        echo "$$FILES"
+        
+        # Ekstrak ekstensi file dan buat list unik
+        EXTENSIONS=$$(echo "$$FILES" | sed -n 's/.*\.\(.*\)$/\1/p' | sort | uniq)
+        echo "Unique extensions: $$EXTENSIONS"
+        
+        # Default container image adalah SKLearn, kecuali ada file .bst
+        CONTAINER_IMAGE="${_CONTAINER_IMAGE_SKLEARN}"
+
+        if echo "$$EXTENSIONS" | grep -q "bst"; then
+            CONTAINER_IMAGE="${_CONTAINER_IMAGE_XGBOOST}"
+            echo "Terdeteksi file .bst, menggunakan container image XGBoost."
+        else
+            echo "Tidak ada file .bst, menggunakan container image SKLearn."
+        fi
+
+        echo "Container image yang digunakan: $$CONTAINER_IMAGE"
+
+        echo "Cek apakah model '$${DISPLAY_NAME}' sudah ada..."
+        MODEL=$$(gcloud ai models list \
+                  --region=$LOCATION \
+                  --project=$PROJECT_ID \
+                  --filter="displayName=$${DISPLAY_NAME}" \
+                  --format="value(name)")
+
+        if [ -z "$$MODEL" ]; then
+            echo "Model belum ada. Upload model baru tanpa parent."
+            PARENT_FLAG=""
+        else
+            echo "Model sudah ada: $$MODEL. Upload sebagai versi baru dengan parent."
+            if [[ "$$MODEL" != projects/* ]]; then
+                echo "Parent model name is not in expected format. Reformatting..."
+                MODEL="projects/$PROJECT_ID/locations/$LOCATION/models/$$MODEL"
+            fi
+            PARENT_FLAG="--parent-model=$$MODEL"
+        fi
+
+        echo "Melakukan upload model..."
+        gcloud ai models upload \
+            --region=$LOCATION \
+            --project=$PROJECT_ID \
+            --display-name="$${DISPLAY_NAME}" \
+            --artifact-uri="$${ARTIFACT_URI}" \
+            --container-image-uri="$$CONTAINER_IMAGE" \
+            --version-aliases=default \
+            $$PARENT_FLAG
+    
 options:
   logging: CLOUD_LOGGING_ONLY
+  
+substitutions:
+  _CONTAINER_IMAGE_XGBOOST: 'asia-docker.pkg.dev/vertex-ai/prediction/xgboost-cpu.1-7:latest'
+  _CONTAINER_IMAGE_SKLEARN: 'asia-docker.pkg.dev/vertex-ai/prediction/sklearn-cpu.1-3:latest'
