@@ -81,6 +81,7 @@ steps:
               --version-aliases=default \
               $$PARENT_FLAG
           echo "Done!"
+        done
         echo "Done All Models!"
     
 options:
