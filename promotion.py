@@ -48,7 +48,7 @@ test_model = aiplatform.Model.upload(
     serving_container_image_uri=container_uri,
     instance_schema_uri=f"gs://{bucket_name}/{model_folder}/prediction_schema.yaml",
     prediction_schema_uri=f"gs://{bucket_name}/{model_folder}/instance.yaml",
-    parent_model=parent_model.resource_name,
+    parent_model=parent_model.resource_name if parent_model != None else None,
     is_default_version=True,
     sync=True,
 )
