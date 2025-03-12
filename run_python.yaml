@@ -31,5 +31,5 @@ options:
 substitutions:
   _BRANCH_NAME: "main"
   _DISPLAY_NAMES_CHURN: "churn"
-  _ARTIFACT_URIS_CHURN: "model-TBA/tf-saved-model"
+  _ARTIFACT_URIS_CHURN: "model/model-2287309641215901696/tf-saved-model"
   
