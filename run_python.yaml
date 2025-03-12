@@ -25,7 +25,7 @@ steps:
       - '-c'
       - |
         pip install google-cloud-aiplatform google-cloud-storage
-        python promotion.py $_BRANCH_NAME $_DISPLAY_NAMES_CHURN $_ARTIFACT_URIS_CHURN
+        python promotion.py $_BRANCH_NAME $_DISPLAY_NAMES_CHURN $_ARTIFACT_URIS_CHURN $LOCATION $PROJECT_ID
 options:
   logging: CLOUD_LOGGING_ONLY
 substitutions:
