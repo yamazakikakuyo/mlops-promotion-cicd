@@ -7,10 +7,10 @@ steps:
     name: 'python:3.10'
     entrypoint: 'pip'
     args: ['install', 'google', 'google-cloud', 'google-cloud-aiplatform']
-  - id: "Show Library"
-    name: 'python:3.10'
-    entrypoint: 'pip'
-    args: ['show', 'google', 'google-cloud', 'google-cloud-aiplatform']
+  # - id: "Show Library"
+  #   name: 'python:3.10'
+  #   entrypoint: 'pip'
+  #   args: ['show', 'google', 'google-cloud', 'google-cloud-aiplatform']
   - id: "List Library"
     name: 'python:3.10'
     entrypoint: 'pip'
