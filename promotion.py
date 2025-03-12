@@ -1,1 +1,1 @@
-print("hello world")
+from google.cloud import aiplatform, storage
