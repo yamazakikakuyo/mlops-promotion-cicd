@@ -1,5 +1,9 @@
 steps:
-  - id: "Install Library"
+  - id: "Install Google for Python"
+    name: 'python:3.10'
+    entrypoint: 'pip'
+    args: ['install', '--upgrade', 'google-api-python-client']
+  - id: "Install Google Library"
     name: 'python:3.10'
     entrypoint: 'pip'
     args: ['install', 'google-cloud-aiplatform']
