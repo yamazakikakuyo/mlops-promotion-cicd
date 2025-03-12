@@ -1,24 +1,31 @@
 steps:
-  - id: "Install Google for Python"
-    name: 'python:3.10'
-    entrypoint: 'pip'
-    args: ['install', '--upgrade', 'google-api-python-client']
-  - id: "Install Google Library"
-    name: 'python:3.10'
-    entrypoint: 'pip'
-    args: ['install', 'google', 'google-cloud', 'google-cloud-aiplatform']
+  # - id: "Install Google for Python"
+  #   name: 'python:3.10'
+  #   entrypoint: 'pip'
+  #   args: ['install', '--upgrade', 'google-api-python-client']
+  # - id: "Install Google Library"
+  #   name: 'python:3.10'
+  #   entrypoint: 'pip'
+  #   args: ['install', 'google', 'google-cloud', 'google-cloud-aiplatform']
   # - id: "Show Library"
   #   name: 'python:3.10'
   #   entrypoint: 'pip'
   #   args: ['show', 'google', 'google-cloud', 'google-cloud-aiplatform']
-  - id: "List Library"
-    name: 'python:3.10'
-    entrypoint: 'pip'
-    args: ['list']
-  - id: "Run Python"
-    name: 'python:3.10' 
-    entrypoint: 'python'
-    args: ['promotion.py']
+  # - id: "List Library"
+  #   name: 'python:3.10'
+  #   entrypoint: 'pip'
+  #   args: ['list']
+  # - id: "Run Python"
+  #   name: 'python:3.10' 
+  #   entrypoint: 'python'
+  #   args: ['promotion.py']
+  - name: 'python:3.10'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        pip install google-cloud-aiplatform google-cloud-storage
+        python promotion.py
 options:
   logging: CLOUD_LOGGING_ONLY
   
