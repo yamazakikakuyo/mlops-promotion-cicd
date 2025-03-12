@@ -1,5 +1,10 @@
 steps:
-  - name: 'python:3.10' 
+  - id: "Install Library"
+    name: 'python:3.10'
+    entrypoint: 'pip'
+    args: ['install', 'google-cloud-aiplatform']
+  - id: "Run Python"
+    name: 'python:3.10' 
     entrypoint: 'python3'
     args: ['promotion.py']
 options:
