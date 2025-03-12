@@ -13,7 +13,7 @@ client = storage.Client()
 
 bucket_name = ""
 if branch_name == "sit":
-    bucket_name = "gs://bkt-churn-sit-mlops-dap/"
+    bucket_name = "gs://source-test-promote-gcs/"
 elif branch_name == "uat":
     bucket_name = "gs://bkt-churn-uat-mlops-dap/"
 elif branch_name == "production":
