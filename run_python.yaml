@@ -1,0 +1,4 @@
+steps:
+  - name: 'python:3.10' 
+    entrypoint: 'python3'
+    args: ['promotion.py']
