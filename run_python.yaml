@@ -6,7 +6,7 @@ steps:
   - id: "Install Google Library"
     name: 'python:3.10'
     entrypoint: 'pip'
-    args: ['install', 'google-cloud-aiplatform']
+    args: ['install', 'google-cloud', 'google-cloud-aiplatform']
   - id: "Run Python"
     name: 'python:3.10' 
     entrypoint: 'python3'
