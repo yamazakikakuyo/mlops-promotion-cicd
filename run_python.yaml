@@ -6,10 +6,10 @@ steps:
   - id: "Install Google Library"
     name: 'python:3.10'
     entrypoint: 'pip'
-    args: ['install', 'google-cloud', 'google-cloud-aiplatform']
+    args: ['install', 'google', 'google-cloud', 'google-cloud-aiplatform']
   - id: "Run Python"
     name: 'python:3.10' 
-    entrypoint: 'python3'
+    entrypoint: 'python'
     args: ['promotion.py']
 options:
   logging: CLOUD_LOGGING_ONLY
