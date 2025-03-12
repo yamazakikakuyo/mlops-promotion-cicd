@@ -13,11 +13,11 @@ client = storage.Client()
 
 bucket_name = ""
 if branch_name == "sit":
-    bucket_name = "gs://source-test-promote-gcs/"
+    bucket_name = "source-test-promote-gcs"
 elif branch_name == "uat":
-    bucket_name = "gs://bkt-churn-uat-mlops-dap/"
+    bucket_name = "bkt-churn-uat-mlops-dap"
 elif branch_name == "production":
-    bucket_name = "gs://bkt-churn-prod-mlops-dap/"
+    bucket_name = "bkt-churn-prod-mlops-dap"
 else:
     raise Exception(f"Error: Unsupported branch {branch_name}") 
 
@@ -25,7 +25,7 @@ models = aiplatform.Model.list(order_by="update_time desc")
 
 parent_model = None
 for model in models:
-    if model.display_name.lower() == model_display_name.lower():  # Ensure exact match
+    if model.display_name.lower() == model_display_name.lower():
         parent_model = model
         break
 
