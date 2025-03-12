@@ -30,6 +30,6 @@ options:
   logging: CLOUD_LOGGING_ONLY
 substitutions:
   _BRANCH_NAME: "main"
-  _DISPLAY_NAMES_CHURN: "churn"
+  _DISPLAY_NAMES_CHURN: "churn_test_2"
   _ARTIFACT_URIS_CHURN: "model/model-2287309641215901696/tf-saved-model"
   
