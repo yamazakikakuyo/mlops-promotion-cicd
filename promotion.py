@@ -37,7 +37,7 @@ if len(blobs) > 0:
 else:
     raise Exception(f"Error: no model that is stored") 
 
-bucket = client.bucket("bkt-churn-dev-mlops-dap")
+bucket = client.bucket(bucket_name)
 blob = bucket.blob(model_folder+"/environment.json")
 content = blob.download_as_text()
 container_uri = json.loads(content).get("container_uri")
