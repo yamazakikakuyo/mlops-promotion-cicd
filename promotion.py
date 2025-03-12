@@ -43,7 +43,7 @@ content = blob.download_as_text()
 container_uri = json.loads(content).get("container_uri")
 
 test_model = aiplatform.Model.upload(
-    display_name="churn",
+    display_name=model_display_name,
     artifact_uri=f"gs://{bucket_name}/{model_folder}",
     serving_container_image_uri=container_uri,
     instance_schema_uri=f"gs://{bucket_name}/{model_folder}/prediction_schema.yaml",
