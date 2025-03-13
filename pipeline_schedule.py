@@ -2,12 +2,14 @@ import sys
 import json
 import pytz
 import subprocess
+from googleapiclient import discovery
+import google.auth
 from google.cloud import aiplatform, storage
 from datetime import datetime, timedelta
 
 branch_name = sys.argv[1]
 location = sys.argv[2]
-project_id = sys.argv[3]
+project_number = sys.argv[3]
 use_case_name = sys.argv[4]
 
 aiplatform.init(location=location)
@@ -30,13 +32,19 @@ content_config = blob.download_as_text()
 # shell_output = !gcloud auth list 2>/dev/null
 # SERVICE_ACCOUNT = shell_output[2].replace("*", "").strip()
 
-shell_output = subprocess.run(
-    ["gcloud", "auth", "list"],
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    text=True
-)
-SERVICE_ACCOUNT = shell_output.stdout.split("\n")[2].replace("*", "").strip()
+# shell_output = subprocess.run(
+#     ["gcloud", "auth", "list"],
+#     stdout=subprocess.PIPE,
+#     stderr=subprocess.PIPE,
+#     text=True
+# )
+# SERVICE_ACCOUNT = shell_output.stdout.split("\n")[2].replace("*", "").strip()
+
+# credentials, project_id = google.auth.default()
+# response = discovery.build('cloudresourcemanager', 'v1', credentials=credentials).projects().get(projectId=project_id).execute()
+# project_number = response.get('projectNumber')
+
+SERVICE_ACCOUNT = f"{project_number}-compute@developer.gserviceaccount.com"
 
 DISPLAY_NAME = content_config.get("pipeline_name")
 PACKAGE_PATH = content_config.get("pipeline_package_path")
