@@ -24,7 +24,7 @@ else:
 
 bucket = client.bucket(bucket_name)
 blob = bucket.blob("pipeline/config.json")
-content_config = json.dumps(blob.download_as_text())
+content_config = json.loads(blob.download_as_text())
 
 SERVICE_ACCOUNT = f"{project_number}-compute@developer.gserviceaccount.com"
 
