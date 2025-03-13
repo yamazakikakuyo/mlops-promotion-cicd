@@ -1,6 +1,5 @@
 import sys
 import json
-import yaml
 import pytz
 from google.cloud import aiplatform, storage
 from datetime import datetime, timedelta
