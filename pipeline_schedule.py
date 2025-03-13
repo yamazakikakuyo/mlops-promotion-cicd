@@ -10,7 +10,7 @@ location = sys.argv[2]
 project_id = sys.argv[3]
 use_case_name = sys.argv[4]
 
-aiplatform.init(location="asia-southeast2")
+aiplatform.init(location=location)
 client = storage.Client()
 
 bucket_name = ""
