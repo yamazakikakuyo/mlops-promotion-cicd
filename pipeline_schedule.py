@@ -26,6 +26,9 @@ bucket = client.bucket(bucket_name)
 blob = bucket.blob("pipeline/config.json")
 content_config = json.loads(blob.download_as_text())
 
+blob = bucket.blob("pipeline/predict-churn.json")
+blob.download_to_filename("./predict-churn.json")
+
 SERVICE_ACCOUNT = f"{project_number}-compute@developer.gserviceaccount.com"
 
 DISPLAY_NAME = content_config.get("pipeline_name")
