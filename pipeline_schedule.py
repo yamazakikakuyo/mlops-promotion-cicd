@@ -1,6 +1,7 @@
 import sys
 import json
 import pytz
+import subprocess
 from google.cloud import aiplatform, storage
 from datetime import datetime, timedelta
 
