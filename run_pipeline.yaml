@@ -5,7 +5,7 @@ steps:
     args:
       - '-c'
       - |
-        pip install -q google-cloud-aiplatform google-cloud-storage pytz yaml
+        pip install -q google-cloud-aiplatform google-cloud-storage pytz PyYAML
         python pipeline_schedule.py $_BRANCH_NAME $LOCATION $PROJECT_NUMBER "churn"
 options:
   logging: CLOUD_LOGGING_ONLY
