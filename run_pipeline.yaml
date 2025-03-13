@@ -1,6 +1,6 @@
 steps:
   - id: Set Pipeline with Schedule
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    name: 'python:3.10'
     entrypoint: 'bash'
     args:
       - '-c'
