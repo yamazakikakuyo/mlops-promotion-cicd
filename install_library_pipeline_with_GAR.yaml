@@ -1,11 +1,41 @@
+### Step for install and update library from GAR
+# steps:
+#   - id: Set Pipeline with Schedule
+#     name: 'python:3.10'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         python3 -m pip install --upgrade pip
+#         python3 -m pip install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-repo/simple 'google-cloud-aiplatform'
+
+### Step for install and update library from GCS
 steps:
-  - id: Set Pipeline with Schedule
+  - id: "Download Library GCAI 1.78.0 from GCS" 
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        mkdir -p /workspace/packages/gcai_1_78
+        mkdir -p /workspace/packages/gcai_1_80
+        mkdir -p /workspace/packages/gcai_1_83
+        gcloud storage cp destination-test-promote-gcs/google-cloud-aiplatform_1.78.0/gcai_1_78/* /workspace/packages/gcai_1_78
+        gcloud storage cp destination-test-promote-gcs/google-cloud-aiplatform_1.80.0/gcai_1_80/* /workspace/packages/gcai_1_80
+        gcloud storage cp destination-test-promote-gcs/google-cloud-aiplatform_1.83.0/gcai_1_83/* /workspace/packages/gcai_1_83
+
+  - id: "Install Library GCAI 1.78.0" 
     name: 'python:3.10'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         python3 -m pip install --upgrade pip
-        python3 -m pip install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-repo/simple 'google-cloud-aiplatform'
+        python3 -m pip install --no-index --find-links=/workspace/packages/gcai_1_78 *.whl
+        python3 -m pip show google-cloud-aiplatform
+        python3 -m pip install --no-index --find-links=/workspace/packages/gcai_1_80 *.whl
+        python3 -m pip show google-cloud-aiplatform
+        python3 -m pip install --no-index --find-links=/workspace/packages/gcai_1_83 *.whl
+        python3 -m pip show google-cloud-aiplatform
 options:
   logging: CLOUD_LOGGING_ONLY
