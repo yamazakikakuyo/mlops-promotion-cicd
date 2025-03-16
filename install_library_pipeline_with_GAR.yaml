@@ -20,9 +20,9 @@ steps:
         mkdir -p /workspace/packages/gcai_1_78
         mkdir -p /workspace/packages/gcai_1_80
         mkdir -p /workspace/packages/gcai_1_83
-        gcloud storage cp destination-test-promote-gcs/google-cloud-aiplatform_1.78.0/gcai_1_78/* /workspace/packages/gcai_1_78
-        gcloud storage cp destination-test-promote-gcs/google-cloud-aiplatform_1.80.0/gcai_1_80/* /workspace/packages/gcai_1_80
-        gcloud storage cp destination-test-promote-gcs/google-cloud-aiplatform_1.83.0/gcai_1_83/* /workspace/packages/gcai_1_83
+        gcloud storage cp gs://destination-test-promote-gcs/google-cloud-aiplatform_1.78.0/gcai_1_78/* /workspace/packages/gcai_1_78
+        gcloud storage cp gs://destination-test-promote-gcs/google-cloud-aiplatform_1.80.0/gcai_1_80/* /workspace/packages/gcai_1_80
+        gcloud storage cp gs://destination-test-promote-gcs/google-cloud-aiplatform_1.83.0/gcai_1_83/* /workspace/packages/gcai_1_83
 
   - id: "Install Library GCAI 1.78.0" 
     name: 'python:3.10'
