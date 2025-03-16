@@ -30,11 +30,18 @@ steps:
     args:
       - '-c'
       - |
+        echo "Update pip"
         python3 -m pip install --upgrade pip
+        echo "Install GCAI 1.78.0"
+        cd /workspace/packages/gcai_1_78
         python3 -m pip install --no-index --find-links=/workspace/packages/gcai_1_78 *.whl
         python3 -m pip show google-cloud-aiplatform
+        echo "Install GCAI 1.80.0"
+        cd /workspace/packages/gcai_1_80
         python3 -m pip install --no-index --find-links=/workspace/packages/gcai_1_80 *.whl
         python3 -m pip show google-cloud-aiplatform
+        echo "Install GCAI 1.83.0"
+        cd /workspace/packages/gcai_1_83
         python3 -m pip install --no-index --find-links=/workspace/packages/gcai_1_83 *.whl
         python3 -m pip show google-cloud-aiplatform
 options:
