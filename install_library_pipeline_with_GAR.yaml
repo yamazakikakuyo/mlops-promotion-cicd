@@ -5,7 +5,7 @@ steps:
     args:
       - '-c'
       - |
-        install -y build-essential curl software-properties-common git && rm -rf /var/lib/apt/lists/*
-        python3 -m pip3 install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-repo/simple 'google-cloud-aiplatform'
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-repo/simple 'google-cloud-aiplatform'
 options:
   logging: CLOUD_LOGGING_ONLY
