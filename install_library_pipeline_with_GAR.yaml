@@ -5,6 +5,6 @@ steps:
     args:
       - '-c'
       - |
-        python3 -m pip install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-repo/simple 'google-cloud-aiplatform'
+        python3 -m pip3 install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-repo/simple 'google-cloud-aiplatform'
 options:
   logging: CLOUD_LOGGING_ONLY
