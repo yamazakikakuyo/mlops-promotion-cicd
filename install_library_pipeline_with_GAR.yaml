@@ -11,7 +11,8 @@ steps:
         # python3 -m pip show packaging
         # python3 -m pip show twine
         # mkdir -p /workspace/packages/
-        python3 -m pip install -r list_library.txt# -d /workspace/packages/
+        python3 -m pip install -r list_library.txt
+        # -d /workspace/packages/
         # python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/* --verbose
         
 
