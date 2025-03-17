@@ -11,12 +11,13 @@ steps:
         # python3 -m pip show packaging
         # python3 -m pip show twine
         mkdir -p /workspace/packages/
-        # python3 -m pip download -r list_library.txt -d /workspace/packages/
-        python3 -m pip download gcsfs -d /workspace/packages/
+        python3 -m pip download -r list_library.txt -d /workspace/packages/
+        # python3 -m pip download gcsfs -d /workspace/packages/
         # rm /workspace/packages/decorator-5.2.1-py3-none-any.whl
         # rm /workspace/packages/db_dtypes-1.4.1-py2.py3-none-any.whl
         # rm /workspace/packages/cycler-0.12.1-py3-none-any.whl
-        python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/decorator-5.2.1-py3-none-any.whl --verbose
+        python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/* --verbose
+        # python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/decorator-5.2.1-py3-none-any.whl --verbose
         
 
 # ### Step for install and update library from GAR
