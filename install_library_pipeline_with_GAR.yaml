@@ -1,5 +1,5 @@
 ### Step for install and update library from requirements.txt in Repository to GAR
-steps:https://github.com/yamazakikakuyo/mlops-promotion-cicd/tree/main
+steps:
   - id: Set Pipeline with Schedule
     name: 'python:3.10'
     entrypoint: 'bash'
@@ -10,7 +10,7 @@ steps:https://github.com/yamazakikakuyo/mlops-promotion-cicd/tree/main
         python3 -m pip install twine
         mkdir -p /workspace/packages/
         cd /workspace/packages/
-        python3 -m pip download -r list_library.txt
+        python3 -m pip download -r list_library.txt  --python-version 3.10 --only-binary=:all:
         cd ..
         python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing ~/packages/* --verbose
         
