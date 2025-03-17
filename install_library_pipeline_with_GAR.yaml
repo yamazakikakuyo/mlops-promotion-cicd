@@ -10,7 +10,7 @@ steps:https://github.com/yamazakikakuyo/mlops-promotion-cicd/tree/main
         python3 -m pip install twine
         mkdir -p /workspace/packages/
         cd /workspace/packages/
-        python3 -m pip download -r list_library.txt --python-version 3.10 --only-binary=:all:
+        python3 -m pip download -r list_library.txt
         cd ..
         python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing ~/packages/* --verbose
         
