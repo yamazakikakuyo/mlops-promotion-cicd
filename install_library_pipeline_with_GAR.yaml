@@ -9,7 +9,7 @@ steps:
         python3 -m pip install --upgrade pip
         python3 -m pip install twine
         mkdir -p /workspace/packages/
-        python3 -m pip download -r list_library.txt -d /workspace/packages/ --python-version 3.10 --only-binary=:all:
+        python3 -m pip download -r list_library.txt -d /workspace/packages/
         python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/* --verbose
         
 
