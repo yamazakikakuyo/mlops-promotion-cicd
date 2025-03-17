@@ -10,9 +10,9 @@ steps:
         python3 -m pip install packaging>=24.2 twine --verbose
         python3 -m pip show packaging
         python3 -m pip show twine
-        # mkdir -p /workspace/packages/
-        # python3 -m pip download -r list_library.txt -d /workspace/packages/
-        # python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/* --verbose
+        mkdir -p /workspace/packages/
+        python3 -m pip download -r list_library.txt -d /workspace/packages/
+        python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/* --verbose
         
 
 # ### Step for install and update library from GAR
