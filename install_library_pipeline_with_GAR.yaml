@@ -1,5 +1,5 @@
-### Step for install and update library from GAR
-steps:
+### Step for install and update library from requirements.txt in Repository to GAR
+steps:https://github.com/yamazakikakuyo/mlops-promotion-cicd/tree/main
   - id: Set Pipeline with Schedule
     name: 'python:3.10'
     entrypoint: 'bash'
@@ -7,13 +7,30 @@ steps:
       - '-c'
       - |
         python3 -m pip install --upgrade pip
-        python3 -m pip uninstall numpy
-        python3 -m pip install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library/simple numpy==2.0.0
-        python3 -m pip show numpy
-        python3 -m pip install --upgrade --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library/simple numpy==2.1.0
-        python3 -m pip show numpy
-        python3 -m pip install --upgrade --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library/simple numpy==2.2.0
-        python3 -m pip show numpy
+        python3 -m pip install twine
+        mkdir -p /workspace/packages/
+        cd /workspace/packages/
+        python3 -m pip download -r list_library.txt --python-version 3.10 --only-binary=:all:
+        cd ..
+        python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing ~/packages/* --verbose
+        
+
+# ### Step for install and update library from GAR
+# steps:
+#   - id: Set Pipeline with Schedule
+#     name: 'python:3.10'
+#     entrypoint: 'bash'
+#     args:
+#       - '-c'
+#       - |
+#         python3 -m pip install --upgrade pip
+#         python3 -m pip uninstall numpy
+#         python3 -m pip install --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library/simple numpy==2.0.0
+#         python3 -m pip show numpy
+#         python3 -m pip install --upgrade --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library/simple numpy==2.1.0
+#         python3 -m pip show numpy
+#         python3 -m pip install --upgrade --index-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library/simple numpy==2.2.0
+#         python3 -m pip show numpy
         
 
 ### Step for install and update library from GCS
