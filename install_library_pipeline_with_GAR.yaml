@@ -7,15 +7,16 @@ steps:
       - '-c'
       - |
         python3 -m pip install --upgrade pip
-        python3 -m pip install packaging>=24.2 pkginfo>=1.12.1.2 twine>=6.1.0 urllib3==1.26.15 requests-toolbelt==0.10.1 --verbose
+        pip install packaging>=24.2 pkginfo>=1.12.1.2 twine>=6.1.0 urllib3==1.26.15 requests-toolbelt==0.10.1 --verbose
         # python3 -m pip show packaging
         # python3 -m pip show twine
         mkdir -p /workspace/packages/
-        python3 -m pip download -r list_library.txt -d /workspace/packages/
-        rm /workspace/packages/decorator-5.2.1-py3-none-any.whl
-        rm /workspace/packages/db_dtypes-1.4.1-py2.py3-none-any.whl
-        rm /workspace/packages/cycler-0.12.1-py3-none-any.whl
-        python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/* --verbose
+        # python3 -m pip download -r list_library.txt -d /workspace/packages/
+        python3 -m pip download gcsfsf
+        # rm /workspace/packages/decorator-5.2.1-py3-none-any.whl
+        # rm /workspace/packages/db_dtypes-1.4.1-py2.py3-none-any.whl
+        # rm /workspace/packages/cycler-0.12.1-py3-none-any.whl
+        python3 -m twine upload --repository-url https://asia-southeast2-python.pkg.dev/bdi-onprod/test-update-library --skip-existing /workspace/packages/decorator-5.2.1-py3-none-any.whl --verbose
         
 
 # ### Step for install and update library from GAR
